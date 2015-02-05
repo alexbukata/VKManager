@@ -42,9 +42,13 @@ public class AudioPlayerController implements Initializable{
         System.out.println(musicList.getHeight());
         VKTrack track = new VKTrack("Thousand Foot Crutch - Move", 180);
         ImageView playIm = new ImageView(play);
-        playIm.setViewport(new Rectangle2D(0, 0, 16, 16));
+        //playIm.setViewport(new Rectangle2D(0, 0, 16, 16));
         ImageView pauseIm = new ImageView(pause);
+<<<<<<< HEAD
         pauseIm.setViewport(new Rectangle2D(0, 0, 16, 16));
+=======
+       // pauseIm.setViewport(new Rectangle2D(0, 0, 16, 16));
+>>>>>>> parent of c1a11ce... Buttons work
         track.setPause(pauseIm);
         track.setPlay(playIm);
         Button toAdd = new Button("Thousand Foot Crutch - Move");
