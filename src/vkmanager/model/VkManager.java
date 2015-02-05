@@ -34,10 +34,8 @@ public class VkManager extends Application{
         }*/
         
         ArrayList<VKPhoto> photos = vkApi.getPhotosFromAlbum(albums.get(1).getId());
-        for(VKPhoto photo : photos){
-            System.out.println("Id: " + photo.getId() + "; Description: " + photo.getDescription() + 
-                    "; Link small: " + photo.getLink_s() + "; Link big: " + photo.getLink_l());
-        }
+        
+        vkApi.savePhotos(photos);
         
         //vkApi.getAlbumThumb(Integer.parseInt(albums.get(1).getThumb()));
         //System.out.println(albums);

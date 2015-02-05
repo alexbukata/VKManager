@@ -1,8 +1,10 @@
 package vkmanager.model;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import org.apache.commons.io.FileUtils;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -84,7 +86,7 @@ public class VKApi{
                 //System.out.println(key + ": " + value);
             }
             
-            for (int i=0; i < postsList.size()-1; i++){
+            for (int i=0; i < postsList.size(); i++){
                 album = (JSONObject) postsList.get(i);
                 //String thumb = getAlbumThumb(Integer.parseInt(album.get("thumb_id").toString()));
                 albums.add(new VKPhotoAlbum(Integer.parseInt(album.get("aid").toString()), 
@@ -126,7 +128,7 @@ public class VKApi{
             JSONObject jsonResp = (JSONObject) parser.parse(thumbJSON.toString());
             JSONArray postsList = (JSONArray) jsonResp.get("response");
             JSONObject thumb_res = null;
-            for (int i=0; i < postsList.size()-1; i++){
+            for (int i=0; i < postsList.size(); i++){
                 thumb_res = (JSONObject) postsList.get(i);
                 thumbs.put(Integer.parseInt(thumb_res.get("aid").toString()), thumb_res.get("src").toString());
             }
@@ -165,7 +167,7 @@ public class VKApi{
             JSONObject jsonResp = (JSONObject) parser.parse(photosJSON.toString());
             JSONArray postsList = (JSONArray) jsonResp.get("response");
             JSONObject photos_res = null;
-            for (int i=0; i < postsList.size()-1; i++){
+            for (int i=0; i < postsList.size(); i++){
                 photos_res = (JSONObject) postsList.get(i);
                 String src_big;
                 if(photos_res.get("src_xxxbig") != null){
@@ -190,5 +192,17 @@ public class VKApi{
             System.exit(-1);
         }
         return photos;
+    }
+    
+    public boolean savePhotos(ArrayList<VKPhoto> photos) throws MalformedURLException, IOException{
+        int i = 0;
+        for(VKPhoto photo : photos){
+            i++;
+            URL photoUrl = new URL(photo.getLink_l());
+            File file = new File("D:\\\\temp\\"+photo.getId()+".jpg");
+            FileUtils.copyURLToFile(photoUrl, file);
+        }
+        System.out.println("There was: " + i);
+        return true;
     }
 }
