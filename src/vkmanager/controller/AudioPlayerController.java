@@ -6,7 +6,9 @@
 package vkmanager.controller;
 
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +20,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import vkmanager.model.VKTrack;
+import vkmanager.model.VKTrackPlayer;
 
 /**
  * FXML Controller class
@@ -36,43 +39,46 @@ public class AudioPlayerController implements Initializable{
     private static int rowsNumber = 0;
     private Image play;
     private Image pause;
-
+    private VKTrackPlayer player;
+    private ArrayList<Button> buttons;
+    
     @FXML
-    private void button1Pressing(){
-        System.out.println(musicList.getHeight());
-        VKTrack track = new VKTrack("Thousand Foot Crutch - Move", 180);
+    private void button1Pressing() throws MalformedURLException{
+        
         ImageView playIm = new ImageView(play);
         playIm.setViewport(new Rectangle2D(0, 0, 16, 16));
         ImageView pauseIm = new ImageView(pause);
         pauseIm.setViewport(new Rectangle2D(0, 0, 16, 16));
+<<<<<<< HEAD
+=======
+        
+        
+        Button toAdd = new Button("Thousand Foot Crutch - Move");
+        VKTrack track = new VKTrack("Thousand Foot Crutch - Move", new URL("http://cs1-35v4.vk-cdn.net/p19/733d7811539325.mp3"), toAdd);
+>>>>>>> origin/Photos
         track.setPause(pauseIm);
         track.setPlay(playIm);
-        Button toAdd = new Button("Thousand Foot Crutch - Move");
+        player.addTrack(track);
+        track.pause();
         toAdd.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event){
-                track.invertStatus();
-                reloadTrackButton(track, toAdd);
+                player.invertStatus(track.getTrackIndex());
             }
             
         });
         toAdd.setStyle("-fx-background-color: White");
         musicList.addRow(rowsNumber++, toAdd);
-        reloadTrackButton(track, toAdd);
     }
     
-    public void reloadTrackButton(VKTrack track, Button trackBut){    
-        System.out.println(trackBut.getWidth() + " " + trackBut.getHeight());        
-        trackBut.setGraphic(track.isPlaying() ? track.getPause() : track.getPlay());
-    }
     @Override
     public void initialize(URL url, ResourceBundle rb){
         musicList.prefHeight(scroll.getPrefHeight());
         musicList.maxHeight(scroll.getMaxHeight());
-        Image playIm = new Image(getClass().getResourceAsStream("/res/img/play.gif"));
-        Image pauseIm = new Image(getClass().getResourceAsStream("/res/img/pause.gif"));
-        
+        play = new Image(getClass().getResourceAsStream("/res/img/play.gif"));
+        pause = new Image(getClass().getResourceAsStream("/res/img/pause.gif"));
+        player = VKTrackPlayer.getInstance();
     }
 
 }
