@@ -3,9 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< HEAD
             <file>file:/C:/Users/Max/Documents/NetBeansProjects/VKManager/src/vkmanager/model/VkManager.java</file>
             <file>file:/C:/Users/Max/Documents/NetBeansProjects/VKManager/src/vkmanager/model/User.java</file>
             <file>file:/C:/Users/Max/Documents/NetBeansProjects/VKManager/src/vkmanager/model/VKApi.java</file>
+=======
+            <file>file:/D:/Java%20Projects/NetBeans/VkManager/src/vkmanager/view/Authorize.fxml</file>
+            <file>file:/D:/Java%20Projects/NetBeans/VkManager/src/vkmanager/view/AudioPlayer.fxml</file>
+            <file>file:/D:/Java%20Projects/NetBeans/VkManager/src/vkmanager/model/VkManager.java</file>
+            <file>file:/D:/Java%20Projects/NetBeans/VkManager/src/vkmanager/controller/AuthorizeController.java</file>
+            <file>file:/D:/Java%20Projects/NetBeans/VkManager/src/vkmanager/model/VKTrackPlayer.java</file>
+            <file>file:/D:/Java%20Projects/NetBeans/VkManager/src/vkmanager/model/VKTrack.java</file>
+            <file>file:/D:/Java%20Projects/NetBeans/VkManager/src/vkmanager/controller/AudioPlayerController.java</file>
+>>>>>>> origin/Photos
         </group>
     </open-files>
 </project-private>

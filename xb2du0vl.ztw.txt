@@ -1,0 +1,69 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch Photos
+# Your branch is behind 'origin/Photos' by 6 commits, and can be fast-forwarded.
+#   (use "git pull" to update your local branch)
+#
+# Changes to be committed:
+#	deleted:    build/built-jar.properties
+#	deleted:    build/classes/res/img/pause.gif
+#	deleted:    build/classes/res/img/play.gif
+#	deleted:    build/classes/res/img/playpause.gif
+#	deleted:    build/classes/vkmanager/controller/AudioPlayerController$1.class
+#	deleted:    build/classes/vkmanager/controller/AudioPlayerController.class
+#	deleted:    build/classes/vkmanager/controller/AuthorizeController.class
+#	deleted:    build/classes/vkmanager/controller/RootVKController.class
+#	deleted:    build/classes/vkmanager/model/VKTrack.class
+#	deleted:    build/classes/vkmanager/model/VKTrackStatusHandler.class
+#	deleted:    build/classes/vkmanager/model/VkManager.class
+#	deleted:    build/classes/vkmanager/view/AudioPlayer.fxml
+#	deleted:    build/classes/vkmanager/view/Authorize.fxml
+#	deleted:    build/classes/vkmanager/view/RootVK.fxml
+#	deleted:    dist/VkManager.html
+#	deleted:    dist/VkManager.jar
+#	deleted:    dist/VkManager.jnlp
+#	deleted:    dist/run713645037/VkManager.html
+#	deleted:    dist/run713645037/VkManager.jar
+#	deleted:    dist/run713645037/VkManager.jnlp
+#	deleted:    dist/run713645037/web-files/dtjava.js
+#	deleted:    dist/run713645037/web-files/error.png
+#	deleted:    dist/run713645037/web-files/get_java.png
+#	deleted:    dist/run713645037/web-files/get_javafx.png
+#	deleted:    dist/run713645037/web-files/javafx-chrome.png
+#	deleted:    dist/run713645037/web-files/javafx-loading-100x100.gif
+#	deleted:    dist/run713645037/web-files/javafx-loading-25x25.gif
+#	deleted:    dist/run713645037/web-files/upgrade_java.png
+#	deleted:    dist/run713645037/web-files/upgrade_javafx.png
+#	deleted:    dist/run765264466/VkManager.html
+#	deleted:    dist/run765264466/VkManager.jar
+#	deleted:    dist/run765264466/VkManager.jnlp
+#	deleted:    dist/run765264466/web-files/dtjava.js
+#	deleted:    dist/run765264466/web-files/error.png
+#	deleted:    dist/run765264466/web-files/get_java.png
+#	deleted:    dist/run765264466/web-files/get_javafx.png
+#	deleted:    dist/run765264466/web-files/javafx-chrome.png
+#	deleted:    dist/run765264466/web-files/javafx-loading-100x100.gif
+#	deleted:    dist/run765264466/web-files/javafx-loading-25x25.gif
+#	deleted:    dist/run765264466/web-files/upgrade_java.png
+#	deleted:    dist/run765264466/web-files/upgrade_javafx.png
+#	deleted:    dist/web-files/dtjava.js
+#	deleted:    dist/web-files/error.png
+#	deleted:    dist/web-files/get_java.png
+#	deleted:    dist/web-files/get_javafx.png
+#	deleted:    dist/web-files/javafx-chrome.png
+#	deleted:    dist/web-files/javafx-loading-100x100.gif
+#	deleted:    dist/web-files/javafx-loading-25x25.gif
+#	deleted:    dist/web-files/upgrade_java.png
+#	deleted:    dist/web-files/upgrade_javafx.png
+#	modified:   nbproject/private/private.properties
+#	modified:   nbproject/project.properties
+#	modified:   src/vkmanager/model/VkManager.java
+#
+# Untracked files:
+#	nbproject/private/private.xml
+#	src/vkmanager/model/User.java
+#	src/vkmanager/model/VKApi.java
+#	src/vkmanager/model/photos/
+#
+
