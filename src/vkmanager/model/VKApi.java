@@ -24,8 +24,6 @@ public class VKApi{
     private static int user_id;   //id пользователя
     private static String redirect_uri = "http://api.vkontakte.ru/blank.html";
     private static String token;
-    //String settings = "friends";    //запрашиваемые функции
-    //"40b7159ef3fc727b6974a0e4093e60381486903e030753ee5c9e820b288ab91b9f940fad853598e39e2de";
     
     public VKApi(User user){
         this.user_id = user.getId();
@@ -43,10 +41,51 @@ public class VKApi{
         return url;
     }
     
-    public ArrayList<VKPhotoAlbum> getAllUserAlbums() throws IOException{
+    public int getIntUserId(String stringId){
+        int id = 0;
+        BufferedReader reader = null;
+        String userIdJSON = "";
+        String url = createURL("users.get", "&user_ids="+stringId);
+        //System.out.println(url);
+        /*Receive albums list in JSON*/
+        try{
+            URL query = new URL(url);
+            reader = new BufferedReader(new InputStreamReader(query.openStream()));
+            userIdJSON = reader.readLine();
+            System.out.println(userIdJSON);
+        }catch (MalformedURLException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally{
+            try{
+                reader.close();
+            }catch(IOException ex){
+                Logger.getLogger(VKApi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        JSONParser parser = new JSONParser();
+        try{
+            JSONObject jsonResp = (JSONObject) parser.parse(userIdJSON.toString());
+            JSONArray postsList = (JSONArray) jsonResp.get("response");
+            JSONObject idRes = null;
+            for (int i=0; i < postsList.size(); i++){
+                idRes = (JSONObject) postsList.get(i);
+                id = Integer.parseInt(idRes.get("uid").toString());
+            }
+        }catch (ParseException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        return id;
+    }
+    
+    public ArrayList<VKPhotoAlbum> getAllUserAlbums(int us_id) throws IOException{
         BufferedReader reader = null;
         String albumsJSON = "";
-        String url = createURL("photos.getAlbums", "album_ids");
+        String url = createURL("photos.getAlbums", "album_ids&owner_id="+us_id);
+        //System.out.println(url);
         /*Receive albums list in JSON*/
         try{
             URL query = new URL(url);
@@ -73,11 +112,12 @@ public class VKApi{
             JSONObject jsonResp = (JSONObject) parser.parse(albumsJSON.toString());
             JSONArray postsList = (JSONArray) jsonResp.get("response");
             JSONObject album = null;
-            for (int i=1; i < postsList.size(); i++){
+            for (int i=0; i < postsList.size(); i++){
                 album = (JSONObject) postsList.get(i);
-                thumbs.append(user_id + "_" + album.get("thumb_id").toString());
+                thumbs.append(us_id + "_" + album.get("thumb_id").toString());
                 if(!(i+1 == postsList.size()))  thumbs.append(",");
             }
+            //System.out.println(thumbs);
             //System.out.println(thumbs);
             HashMap<Integer, String> thumbsLinks = getAlbumsThumbs(thumbs.toString());
             for(Map.Entry<Integer, String> entrySet : thumbsLinks.entrySet()){
@@ -99,7 +139,7 @@ public class VKApi{
             e.printStackTrace();
             System.exit(-1);
         }
-        
+        //System.out.println("Альбомов извелечено: " + albums.size());
         return albums;
     }
     
@@ -107,6 +147,7 @@ public class VKApi{
     public HashMap<Integer, String> getAlbumsThumbs(String thumbIds) throws IOException{
         BufferedReader reader = null;
         String url = createURL("photos.getById", "&photos=" + thumbIds);
+        //System.out.println(url);
         String thumbJSON = "";
         /*Receive albums thumb in JSON*/
         try{
@@ -139,16 +180,17 @@ public class VKApi{
         return thumbs;
     }
     
-    public ArrayList<VKPhoto> getPhotosFromAlbum(int albumId){
+    public ArrayList<VKPhoto> getPhotosFromAlbum(int albumId, int userId){
         BufferedReader reader = null;
         String photosJSON = "";
-        String url = createURL("photos.get", "&album_id=" + albumId);
+        String url = createURL("photos.get", "&album_id=" + albumId + "&owner_id="+userId);
+        System.out.println(url);
         /*Receive photos list in JSON*/
         try{
             URL query = new URL(url);
             reader = new BufferedReader(new InputStreamReader(query.openStream()));
             photosJSON = reader.readLine();
-            System.out.println(photosJSON);
+            //System.out.println(photosJSON);
         }catch (MalformedURLException e){
             e.printStackTrace();
         }catch (IOException e){
@@ -202,7 +244,7 @@ public class VKApi{
             File file = new File("D:\\\\temp\\"+photo.getId()+".jpg");
             FileUtils.copyURLToFile(photoUrl, file);
         }
-        System.out.println("There was: " + i);
+        //System.out.println("There was: " + i);
         return true;
     }
 }

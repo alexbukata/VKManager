@@ -24,6 +24,9 @@ public class User{
             user = new User(id, name, lastname, photo, token);
         return user;
     }
+    public static User getCurrentUser(){
+        return user;
+    }
     
     public String getName(){
         return name;
