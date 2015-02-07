@@ -9,7 +9,9 @@ import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.ResourceBundle;
+import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.*;
@@ -48,6 +50,7 @@ public class AudioPlayerController implements Initializable{
     private ArrayList<Button> buttons;
     private VKApi vkapi;
 
+
     @FXML
     private void button1Pressing() throws MalformedURLException{
 
@@ -74,6 +77,7 @@ public class AudioPlayerController implements Initializable{
         player = VKTrackPlayer.getInstance();
         User user = User.createUser(138367346, "Alexander", "Bukata", "1", "dfd2ce0f214fc8257d22ab53bf235ebebc50f5c2562a88c25020463a41ae6b5f4bcdb2d8b9082f62ad5bb");
         vkapi = new VKApi(user);
+
     }
 
 }

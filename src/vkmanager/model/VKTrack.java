@@ -105,6 +105,10 @@ public class VKTrack{
     public void setTrackBut(Button trackBut){
         this.trackBut = trackBut;
     }
+
+    public MediaPlayer getPlayer(){
+        return player;
+    }
     
     
 }

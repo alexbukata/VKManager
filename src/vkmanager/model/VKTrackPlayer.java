@@ -10,9 +10,10 @@ public class VKTrackPlayer{
     private ArrayList<VKTrack> tracks;
     private MediaPlayer player;
     private static VKTrack last;
-    
+    private Iterator<VKTrack> iterator;
     private VKTrackPlayer(){
         tracks = new ArrayList<>();
+        iterator = tracks.iterator();
     }
 
     public static synchronized VKTrackPlayer getInstance(){
@@ -58,5 +59,8 @@ public class VKTrackPlayer{
         return player;
     }
 
+    public Iterator<VKTrack> getIterator(){
+        return tracks.iterator();
+    }
     
 }
