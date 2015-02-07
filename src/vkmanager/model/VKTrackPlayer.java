@@ -6,7 +6,7 @@ import java.util.*;
 
 public class VKTrackPlayer{
 
-    private static VKTrackPlayer instance = new VKTrackPlayer();
+    private static VKTrackPlayer instance;
     private ArrayList<VKTrack> tracks;
     private MediaPlayer player;
     private static VKTrack last;
@@ -15,7 +15,10 @@ public class VKTrackPlayer{
         tracks = new ArrayList<>();
     }
 
-    public static VKTrackPlayer getInstance(){
+    public static synchronized VKTrackPlayer getInstance(){
+        if (instance == null){
+            instance = new VKTrackPlayer();
+        }
         return instance;
     }
 
@@ -26,12 +29,17 @@ public class VKTrackPlayer{
     
     
     public void invertStatus(int index){
-        if (last != null){
-            last.pause();            
-        }
+        
         VKTrack currTrack = tracks.get(index);
+        if (last != null && last.getTrackIndex() != currTrack.getTrackIndex()){
+            last.stop();
+        }
         currTrack.invertStatus();
         last = currTrack;
+    }
+    
+    public VKTrack getTrack(int index){
+        return tracks.get(index);
     }
     
     public void addTrack(VKTrack track){
@@ -42,4 +50,13 @@ public class VKTrackPlayer{
         }
     }
 
+    public void addAllMusic(ArrayList<VKTrack> tracks){
+        this.tracks.addAll(tracks);
+    }
+
+    public MediaPlayer getPlayer(){
+        return player;
+    }
+
+    
 }

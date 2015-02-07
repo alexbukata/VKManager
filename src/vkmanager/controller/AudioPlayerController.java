@@ -19,7 +19,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
+import vkmanager.model.User;
+import vkmanager.model.VKApi;
 import vkmanager.model.VKTrack;
+import vkmanager.model.VKTrackPlacer;
 import vkmanager.model.VKTrackPlayer;
 
 /**
@@ -35,50 +38,33 @@ public class AudioPlayerController implements Initializable{
     private ScrollPane scroll;
     @FXML
     private Button but1;
+    @FXML
+    private ProgressBar bar1;
 
     private static int rowsNumber = 0;
     private Image play;
     private Image pause;
     private VKTrackPlayer player;
     private ArrayList<Button> buttons;
-    
+    private VKApi vkapi;
+
     @FXML
     private void button1Pressing() throws MalformedURLException{
-        
-        ImageView playIm = new ImageView(play);
-        //playIm.setViewport(new Rectangle2D(0, 0, 16, 16));
-        ImageView pauseIm = new ImageView(pause);
-<<<<<<< HEAD
-        pauseIm.setViewport(new Rectangle2D(0, 0, 16, 16));
-<<<<<<< HEAD
-=======
-       // pauseIm.setViewport(new Rectangle2D(0, 0, 16, 16));
->>>>>>> parent of c1a11ce... Buttons work
-=======
-<<<<<<< HEAD
-=======
-        
-        
-        Button toAdd = new Button("Thousand Foot Crutch - Move");
-        VKTrack track = new VKTrack("Thousand Foot Crutch - Move", new URL("http://cs1-35v4.vk-cdn.net/p19/733d7811539325.mp3"), toAdd);
->>>>>>> origin/Photos
->>>>>>> parent of c14350e... Added Saving for photots
-        track.setPause(pauseIm);
-        track.setPlay(playIm);
-        player.addTrack(track);
-        track.pause();
-        toAdd.setOnAction(new EventHandler<ActionEvent>() {
 
-            @Override
-            public void handle(ActionEvent event){
-                player.invertStatus(track.getTrackIndex());
-            }
-            
-        });
-        toAdd.setStyle("-fx-background-color: White");
-        musicList.addRow(rowsNumber++, toAdd);
+        ArrayList<VKTrack> tracks = vkapi.getAllUserMusic();
+        player.addAllMusic(tracks);
+        System.out.println(tracks);
+        for (VKTrack track : tracks) {
+            //System.out.println(track.getTrackIndex());
+            ImageView playIm = new ImageView(play);
+            ImageView pauseIm = new ImageView(pause);
+            track.setPause(pauseIm);
+            track.setPlay(playIm);
+            VKTrackPlacer placer = new VKTrackPlacer(track, musicList);
+            placer.place();
+        }
     }
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb){
         musicList.prefHeight(scroll.getPrefHeight());
@@ -86,6 +72,8 @@ public class AudioPlayerController implements Initializable{
         play = new Image(getClass().getResourceAsStream("/res/img/play.gif"));
         pause = new Image(getClass().getResourceAsStream("/res/img/pause.gif"));
         player = VKTrackPlayer.getInstance();
+        User user = User.createUser(138367346, "Alexander", "Bukata", "1", "dfd2ce0f214fc8257d22ab53bf235ebebc50f5c2562a88c25020463a41ae6b5f4bcdb2d8b9082f62ad5bb");
+        vkapi = new VKApi(user);
     }
 
 }

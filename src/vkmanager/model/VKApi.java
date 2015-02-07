@@ -22,6 +22,7 @@ public class VKApi{
     private static int user_id;   //id пользователя
     private static String redirect_uri = "http://api.vkontakte.ru/blank.html";
     private static String token;
+    private static int musicOffset = 0;
     //String settings = "friends";    //запрашиваемые функции
     //"40b7159ef3fc727b6974a0e4093e60381486903e030753ee5c9e820b288ab91b9f940fad853598e39e2de";
     
@@ -39,6 +40,43 @@ public class VKApi{
                 "?fields=" + parameters + "&out=0" +
                 "&access_token=" + token;
         return url;
+    }
+    
+    public ArrayList<VKTrack> getAllUserMusic(){
+        BufferedReader reader = null;
+        String tracksJSON = "";
+        String url = createURL("audio.get","&count=10&offset="+musicOffset);
+        musicOffset+=10;
+        try{
+            URL query = new URL(url);
+            reader = new BufferedReader(new InputStreamReader(query.openStream()));
+            tracksJSON = reader.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.print(tracksJSON);
+        ArrayList<VKTrack> tracks = new ArrayList<>();
+        JSONParser parser = new JSONParser();
+        try{
+            JSONObject jsonResp = (JSONObject)parser.parse(tracksJSON.toString());
+            JSONArray trackList = (JSONArray) jsonResp.get("response");
+            JSONObject track = null;
+            String titleArtist;
+            for(int i=0; i<trackList.size(); i++){
+                track = (JSONObject) trackList.get(i);
+                titleArtist = track.get("artist") + " - " + track.get("title");
+                int duration = Integer.parseInt(track.get("duration").toString());
+                URL trackUrl = new URL(track.get("url").toString());
+                VKTrack vktrack = new VKTrack(titleArtist, trackUrl);
+                System.out.println(vktrack.getTrackIndex());
+                tracks.add(vktrack);
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(VKApi.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(VKApi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tracks;
     }
     
     public ArrayList<VKPhotoAlbum> getAllUserAlbums() throws IOException{

@@ -30,6 +30,15 @@ public class VKTrack{
         Media mp3 = new Media(trackUrl.toString());
         player = new MediaPlayer(mp3);
     }
+    
+    public VKTrack(String name, URL trackUrl){
+        trackIndex = index++;
+        this.name = name;
+        this.playing = false;
+        this.trackUrl = trackUrl;
+        Media mp3 = new Media(trackUrl.toString());
+        player = new MediaPlayer(mp3);
+    }
 
     public ImageView getPlay(){
         return play;
@@ -65,21 +74,23 @@ public class VKTrack{
         } else {
             play();
         }
-        playing = !playing;
     }
 
     public void play(){
         player.play();
+        playing = true;
         trackBut.setGraphic(pause);
     }
     
     public void pause(){
         player.pause();
+        playing = false;
         trackBut.setGraphic(play);
     }
     
     public void stop(){
         player.stop();
+        playing = false;
         trackBut.setGraphic(play);
     }
     
@@ -87,4 +98,13 @@ public class VKTrack{
         return trackIndex;
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public void setTrackBut(Button trackBut){
+        this.trackBut = trackBut;
+    }
+    
+    
 }
