@@ -1,4 +1,4 @@
-package vkmanager.model;
+package vkmanager.model.music;
 
 import java.net.URL;
 import javafx.scene.control.Button;
@@ -13,20 +13,21 @@ public class VKTrack{
     private int trackIndex; 
     private String name;
     private boolean playing;
-    private long lengthSec;
     private ImageView play;
     private ImageView pause;
     private URL trackUrl;
     private MediaPlayer player;
     private Button trackBut;
+    private VKTrackPlacer placer;
     
 
-    public VKTrack(String name, URL trackUrl, Button trackBut){
+    public VKTrack(String name, URL trackUrl, Button trackBut, VKTrackPlacer placer){
         trackIndex = index++;
         this.name = name;
         this.trackBut = trackBut;
         this.playing = false;
         this.trackUrl = trackUrl;
+        this.placer=placer;
         Media mp3 = new Media(trackUrl.toString());
         player = new MediaPlayer(mp3);
     }
@@ -108,6 +109,18 @@ public class VKTrack{
 
     public MediaPlayer getPlayer(){
         return player;
+    }
+
+    public Button getTrackBut(){
+        return trackBut;
+    }
+
+    public void setPlacer(VKTrackPlacer placer){
+        this.placer = placer;
+    }
+
+    public VKTrackPlacer getPlacer(){
+        return placer;
     }
     
     

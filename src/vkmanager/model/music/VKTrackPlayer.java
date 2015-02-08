@@ -1,4 +1,4 @@
-package vkmanager.model;
+package vkmanager.model.music;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -11,6 +11,7 @@ public class VKTrackPlayer{
     private MediaPlayer player;
     private static VKTrack last;
     private Iterator<VKTrack> iterator;
+    
     private VKTrackPlayer(){
         tracks = new ArrayList<>();
         iterator = tracks.iterator();
@@ -26,14 +27,13 @@ public class VKTrackPlayer{
     public ArrayList<VKTrack> getTracks(){
         return tracks;
     }
-    
-    
-    
+
     public void invertStatus(int index){
         
         VKTrack currTrack = tracks.get(index);
         if (last != null && last.getTrackIndex() != currTrack.getTrackIndex()){
             last.stop();
+            VKTrackPlacer1.getInstance().invertTimeProgress(last.getTrackIndex());
         }
         currTrack.invertStatus();
         last = currTrack;

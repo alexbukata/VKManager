@@ -1,4 +1,4 @@
-package vkmanager.model;
+package vkmanager.model.music;
 
 import java.util.Iterator;
 import javafx.animation.AnimationTimer;
@@ -10,7 +10,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
 public class VKTrackPlacer{
-
+/*
     private VKTrack track;
     private VKTrackPlayer player;
     private Button playPause;
@@ -72,14 +72,19 @@ public class VKTrackPlacer{
     public void invertTimeProgress(){
         BorderPane pane = new BorderPane(null, null, null, time, name);
         ToolBar trackBar = null;
-        if (isTimeVisible) {
+        if (!track.isPlaying()) {
             trackBar = new ToolBar(playPause, name);
         } else {
             trackBar = new ToolBar(playPause, pane);
         }
         trackBar.setStyle("-fx-background-color: white");
-        isTimeVisible = !isTimeVisible;
         container.add(trackBar, 0, track.getTrackIndex() + 1);
         System.out.println(track.getTrackIndex() + 2);
     }
+
+    public AnimationTimer getProgressTimer(){
+        return progressTimer;
+    }
+    
+     */
 }

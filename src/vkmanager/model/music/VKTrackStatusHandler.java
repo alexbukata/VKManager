@@ -1,4 +1,4 @@
-package vkmanager.model;
+package vkmanager.model.music;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
