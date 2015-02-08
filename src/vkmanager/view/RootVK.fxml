@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="vkmanager.controller.RootVKController">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="467.0" prefWidth="609.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vkmanager.controller.RootVKController">
    <children>
-      <BorderPane layoutX="55.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane fx:id="mainPane" layoutX="55.0" prefHeight="467.0" prefWidth="609.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <MenuBar BorderPane.alignment="CENTER">
               <menus>
@@ -26,6 +27,49 @@
               </menus>
             </MenuBar>
          </top>
+         <bottom>
+            <AnchorPane prefHeight="18.0" prefWidth="609.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Group layoutX="-9.0" layoutY="-413.0" AnchorPane.rightAnchor="21.57421875">
+                     <children>
+                        <Label layoutX="477.0" layoutY="430.0" text="Букатаhvjufkuyfkufkyg" />
+                        <MenuButton contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="468.0" layoutY="443.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="30.0" prefWidth="32.0" style="-fx-background-color: transparent;" textFill="#6600ff">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <items>
+                              <MenuItem fx:id="photoItem" mnemonicParsing="false" onAction="#onPhotosSelect" text="Мои фото" />
+                              <MenuItem fx:id="musicItem" mnemonicParsing="false" onAction="#onMusicSelect" text="Моя музыка" />
+                           </items>
+                        </MenuButton>
+                        <Button layoutX="421.0" layoutY="416.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent; -fx-background-image: url(&quot;http://cs402330.vk.me/v402330401/9760/pV6sZ5wRGxE.jpg&quot;);" />
+                        <Label layoutX="477.0" layoutY="413.0" text="Александр" />
+                     </children>
+                  </Group>
+                  <ToolBar prefHeight="40.0" prefWidth="412.0" style="-fx-background-color: transparent;">
+                     <items>
+                        <Button id="playCurrentTrack" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: transparent; -fx-background-image: url(&quot;play.gif&quot;);" />
+                        <BorderPane prefHeight="30.0" prefWidth="261.0">
+                           <bottom>
+                              <ProgressBar minHeight="-Infinity" minWidth="-Infinity" prefHeight="8.0" prefWidth="261.0" progress="0.0" BorderPane.alignment="CENTER" />
+                           </bottom>
+                           <left>
+                              <Label text="Label" BorderPane.alignment="CENTER" />
+                           </left>
+                        </BorderPane>
+                        <Slider maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="5.0" prefWidth="84.0" value="75.0">
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </Slider>
+                     </items>
+                  </ToolBar>
+               </children>
+            </AnchorPane>
+         </bottom>
       </BorderPane>
    </children>
 </AnchorPane>

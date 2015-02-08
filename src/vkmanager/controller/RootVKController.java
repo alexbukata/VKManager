@@ -5,9 +5,21 @@
  */
 package vkmanager.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -16,12 +28,35 @@ import javafx.fxml.Initializable;
  */
 public class RootVKController implements Initializable {
 
+    @FXML
+    private MenuItem photoItem;
+    @FXML
+    private BorderPane mainPane;
+    
+    public void onPhotosSelect(ActionEvent event){
+        try {
+            Parent photosPane = FXMLLoader.load(getClass().getResource("/vkmanager/view/photos/Photos.fxml"));
+            mainPane.setCenter(photosPane);
+        } catch (IOException ex) {
+            Logger.getLogger(RootVKController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void onMusicSelect(ActionEvent event){
+        try {
+            Parent musicPane = FXMLLoader.load(getClass().getResource("/vkmanager/view/music/AudioPlayer.fxml"));
+            mainPane.setCenter(musicPane);
+            musicPane.autosize();
+        } catch (IOException ex) {
+            Logger.getLogger(RootVKController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }    
     
 }

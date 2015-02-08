@@ -70,14 +70,14 @@ public class AudioPlayerController implements Initializable{
 
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        musicList.prefHeight(scroll.getPrefHeight());
-        musicList.maxHeight(scroll.getMaxHeight());
+        musicList.prefHeight(scroll.getHeight());
+        musicList.maxHeight(scroll.getHeight());
         play = new Image(getClass().getResourceAsStream("/res/img/play.gif"));
         pause = new Image(getClass().getResourceAsStream("/res/img/pause.gif"));
         player = VKTrackPlayer.getInstance();
         placer = VKTrackPlacer1.getInstance();
         placer.setContainer(musicList);
-        User user = User.createUser(138367346, "Alexander", "Bukata", "1", "74f3e89cfa870d8228c6ce4ddd8fdd4760a5d5fc16eee2e7f2034b71395914df54fdbe5c47bb670b181a5");
+        User user = User.createUser(138367346, "Alexander", "Bukata", "1", "41163c53af7a8b6ee2e732d62e7da014229db02e6d8e84e225b5316cf7956396a9d4eeff3d05c2c792a10");
         vkapi = new VKApi(user);
 
     }
