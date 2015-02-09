@@ -77,7 +77,7 @@ public class AudioPlayerController implements Initializable{
         player = VKTrackPlayer.getInstance();
         placer = VKTrackPlacer1.getInstance();
         placer.setContainer(musicList);
-        User user = User.createUser(138367346, "Alexander", "Bukata", "1", "41163c53af7a8b6ee2e732d62e7da014229db02e6d8e84e225b5316cf7956396a9d4eeff3d05c2c792a10");
+        User user = User.getCurrentUser();
         vkapi = new VKApi(user);
 
     }

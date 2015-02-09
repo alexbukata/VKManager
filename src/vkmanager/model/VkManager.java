@@ -5,13 +5,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class VkManager extends Application{
@@ -36,13 +32,15 @@ public class VkManager extends Application{
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException{
+        
+        User user = User.createUser(87582268, "Max", "Vorontsov", "1", "9a60686c01d8a6761246267ed57ae0cec15374b4f4983f62dccbb54d221c6786c6b06b5c4d748535ab4e7");
         launch(args);
     }
 
     private void showPlayer(){
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(VkManager.class.getResource("/vkmanager/view/music/AudioPlayer.fxml"));
+            loader.setLocation(VkManager.class.getResource("/vkmanager/view/photos/Photos.fxml"));
             AnchorPane audioPane = loader.load();
             rootPane.setCenter(audioPane);
         } catch (IOException ex) {

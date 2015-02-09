@@ -43,44 +43,6 @@ public class VKApi{
         return url;
     }
     
-    public ArrayList<VKTrack> getAllUserMusic(){
-        BufferedReader reader = null;
-        String tracksJSON = "";
-        String url = createURL("audio.get","&count=10&offset="+musicOffset);
-        System.out.println(url);
-        musicOffset+=10;
-        try{
-            URL query = new URL(url);
-            reader = new BufferedReader(new InputStreamReader(query.openStream()));
-            tracksJSON = reader.readLine();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.print(tracksJSON);
-        ArrayList<VKTrack> tracks = new ArrayList<>();
-        JSONParser parser = new JSONParser();
-        try{
-            JSONObject jsonResp = (JSONObject)parser.parse(tracksJSON.toString());
-            JSONArray trackList = (JSONArray) jsonResp.get("response");
-            JSONObject track = null;
-            String titleArtist;
-            for(int i=0; i<trackList.size(); i++){
-                track = (JSONObject) trackList.get(i);
-                titleArtist = track.get("artist") + " - " + track.get("title");
-                int duration = Integer.parseInt(track.get("duration").toString());
-                URL trackUrl = new URL(track.get("url").toString());
-                VKTrack vktrack = new VKTrack(titleArtist, trackUrl);
-                System.out.println(vktrack.getTrackIndex());
-                tracks.add(vktrack);
-            }
-        } catch (ParseException ex) {
-            Logger.getLogger(VKApi.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(VKApi.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return tracks;
-    }
-    
     public int getIntUserId(String stringId){
         int id = 0;
         BufferedReader reader = null;
@@ -119,6 +81,79 @@ public class VKApi{
             System.exit(-1);
         }
         return id;
+    }
+    
+    public int getIdFromHref(String href){
+        href = href.substring(href.lastIndexOf("vk.com") + 7);
+        System.out.println(href);
+        int id = 0;
+        /*If id is integer*/
+        if((href.substring(0, 2).equals("id"))){
+            for(int i = 2; i < href.length(); i++){
+                if(i == href.length()-1 || href.charAt(i) == '?' || href.charAt(i) == '&'){
+                    if(i == href.length()-1){
+                        id = Integer.parseInt(href.substring(2, i+1));
+                    }else{
+                        id = Integer.parseInt(href.substring(2, i));
+                    }
+                    System.out.println(id);
+                    break;
+                }
+            }
+        /*if id is string*/
+        }else{
+            for(int i = 0; i < href.length(); i++){
+                if(i == href.length()-1 || href.charAt(i) == '?' || href.charAt(i) == '&'){
+                    if(i == href.length()-1){
+                        href = href.substring(0, i+1);
+                    }else{
+                        href = href.substring(0, i);
+                    }
+                    System.out.println(href);
+                    break;
+                }
+            }
+            id = getIntUserId(href);
+        }
+        return id;
+    }
+    
+    public ArrayList<VKTrack> getAllUserMusic(){
+        BufferedReader reader = null;
+        String tracksJSON = "";
+        String url = createURL("audio.get","&count=10&offset="+musicOffset);
+        System.out.println(url);
+        musicOffset+=10;
+        try{
+            URL query = new URL(url);
+            reader = new BufferedReader(new InputStreamReader(query.openStream()));
+            tracksJSON = reader.readLine();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.print(tracksJSON);
+        ArrayList<VKTrack> tracks = new ArrayList<>();
+        JSONParser parser = new JSONParser();
+        try{
+            JSONObject jsonResp = (JSONObject)parser.parse(tracksJSON.toString());
+            JSONArray trackList = (JSONArray) jsonResp.get("response");
+            JSONObject track = null;
+            String titleArtist;
+            for(int i=0; i<trackList.size(); i++){
+                track = (JSONObject) trackList.get(i);
+                titleArtist = track.get("artist") + " - " + track.get("title");
+                int duration = Integer.parseInt(track.get("duration").toString());
+                URL trackUrl = new URL(track.get("url").toString());
+                VKTrack vktrack = new VKTrack(titleArtist, trackUrl);
+                System.out.println(vktrack.getTrackIndex());
+                tracks.add(vktrack);
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(VKApi.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(VKApi.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return tracks;
     }
     
     public ArrayList<VKPhotoAlbum> getAllUserAlbums(int us_id) throws IOException{
@@ -166,7 +201,7 @@ public class VKApi{
                 //System.out.println(key + ": " + value);
             }
             
-            for (int i=0; i < postsList.size()-1; i++){
+            for (int i=0; i < postsList.size(); i++){
                 album = (JSONObject) postsList.get(i);
                 //String thumb = getAlbumThumb(Integer.parseInt(album.get("thumb_id").toString()));
                 albums.add(new VKPhotoAlbum(Integer.parseInt(album.get("aid").toString()), 
@@ -209,9 +244,9 @@ public class VKApi{
             JSONObject jsonResp = (JSONObject) parser.parse(thumbJSON.toString());
             JSONArray postsList = (JSONArray) jsonResp.get("response");
             JSONObject thumb_res = null;
-            for (int i=0; i < postsList.size()-1; i++){
+            for (int i=0; i < postsList.size(); i++){
                 thumb_res = (JSONObject) postsList.get(i);
-                thumbs.put(Integer.parseInt(thumb_res.get("aid").toString()), thumb_res.get("src").toString());
+                thumbs.put(Integer.parseInt(thumb_res.get("aid").toString()), thumb_res.get("src_big").toString());
             }
         }catch (ParseException e) {
             e.printStackTrace();
@@ -249,7 +284,7 @@ public class VKApi{
             JSONObject jsonResp = (JSONObject) parser.parse(photosJSON.toString());
             JSONArray postsList = (JSONArray) jsonResp.get("response");
             JSONObject photos_res = null;
-            for (int i=0; i < postsList.size()-1; i++){
+            for (int i=0; i < postsList.size(); i++){
                 photos_res = (JSONObject) postsList.get(i);
                 String src_big;
                 if(photos_res.get("src_xxxbig") != null){
@@ -265,7 +300,7 @@ public class VKApi{
                 }
                 photos.add(new VKPhoto(Integer.parseInt(photos_res.get("pid").toString()), 
                                        photos_res.get("text").toString(), 
-                                       photos_res.get("src").toString(), 
+                                       photos_res.get("src_big").toString(), 
                                        src_big
                            ));
             }
@@ -274,17 +309,5 @@ public class VKApi{
             System.exit(-1);
         }
         return photos;
-    }
-    
-    public boolean savePhotos(ArrayList<VKPhoto> photos) throws MalformedURLException, IOException{
-        int i = 0;
-        for(VKPhoto photo : photos){
-            i++;
-            URL photoUrl = new URL(photo.getLink_l());
-            File file = new File("D:\\\\temp\\"+photo.getId()+".jpg");
-            FileUtils.copyURLToFile(photoUrl, file);
-        }
-        //System.out.println("There was: " + i);
-        return true;
     }
 }
