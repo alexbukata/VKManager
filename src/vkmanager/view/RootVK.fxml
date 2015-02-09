@@ -32,7 +32,7 @@
                <children>
                   <Group layoutX="-9.0" layoutY="-413.0" AnchorPane.rightAnchor="21.57421875">
                      <children>
-                        <Label fx:id="userLastname" layoutX="477.0" layoutY="430.0" text="Букатаhvjufkuyfkufkyg" />
+                        <Label layoutX="477.0" layoutY="430.0" text="Букатаhvjufkuyfkufkyg" />
                         <MenuButton contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="468.0" layoutY="443.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="30.0" prefWidth="32.0" style="-fx-background-color: transparent;" textFill="#6600ff">
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -45,22 +45,26 @@
                               <MenuItem fx:id="musicItem" mnemonicParsing="false" onAction="#onMusicSelect" text="Моя музыка" />
                            </items>
                         </MenuButton>
-                        <Button fx:id="userPhoto" layoutX="414.0" layoutY="413.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent;" />
-                        <Label fx:id="userFirstname" layoutX="477.0" layoutY="413.0" text="Александр" />
+                        <Button layoutX="421.0" layoutY="416.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent; -fx-background-image: url(&quot;http://cs402330.vk.me/v402330401/9760/pV6sZ5wRGxE.jpg&quot;);" />
+                        <Label layoutX="477.0" layoutY="413.0" text="Александр" />
                      </children>
                   </Group>
                   <ToolBar prefHeight="40.0" prefWidth="412.0" style="-fx-background-color: transparent;">
                      <items>
-                        <Button id="playCurrentTrack" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: transparent; -fx-background-image: url(&quot;play.gif&quot;);" />
+                        <Button id="playCurrentTrack" fx:id="currTrackBut" mnemonicParsing="false" prefHeight="25.0" prefWidth="25.0" style="-fx-background-color: transparent; -fx-background-image: url(&quot;play.gif&quot;);" />
                         <BorderPane prefHeight="30.0" prefWidth="261.0">
-                           <bottom>
-                              <ProgressBar minHeight="-Infinity" minWidth="-Infinity" prefHeight="8.0" prefWidth="261.0" progress="0.0" BorderPane.alignment="CENTER" />
-                           </bottom>
                            <left>
-                              <Label text="Label" BorderPane.alignment="CENTER" />
+                              <Label fx:id="currTrackName" BorderPane.alignment="CENTER" />
                            </left>
+                           <bottom>
+                              <BorderPane prefHeight="0.0" prefWidth="261.0" BorderPane.alignment="CENTER">
+                                 <left>
+                                    <ProgressBar fx:id="currTrackProgress" minHeight="-Infinity" minWidth="-Infinity" prefHeight="11.0" prefWidth="367.0" progress="0.0" BorderPane.alignment="CENTER" />
+                                 </left>
+                              </BorderPane>
+                           </bottom>
                         </BorderPane>
-                        <Slider maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="5.0" prefWidth="84.0" value="75.0">
+                        <Slider maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="5.0" prefWidth="84.0" value="75.0" visible="false">
                            <padding>
                               <Insets left="15.0" />
                            </padding>

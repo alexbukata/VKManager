@@ -1,66 +1,63 @@
 package vkmanager.model.music;
 
-import javafx.scene.media.Media;
+import java.util.ArrayList;
 import javafx.scene.media.MediaPlayer;
-import java.util.*;
+import vkmanager.model.music.VKTrack;
 
 public class VKTrackPlayer{
 
     private static VKTrackPlayer instance;
-    private ArrayList<VKTrack> tracks;
+
     private MediaPlayer player;
-    private static VKTrack last;
-    private Iterator<VKTrack> iterator;
-    
+    private ArrayList<VKTrack> tracks;
+    private VKTrack lastTrack;
+
     private VKTrackPlayer(){
         tracks = new ArrayList<>();
-        iterator = tracks.iterator();
     }
 
-    public static synchronized VKTrackPlayer getInstance(){
-        if (instance == null){
+    public static VKTrackPlayer getInstance(){
+        if (instance == null) {
             instance = new VKTrackPlayer();
         }
         return instance;
     }
 
-    public ArrayList<VKTrack> getTracks(){
-        return tracks;
+    public void add(VKTrack track){
+        tracks.add(track);
     }
 
-    public void invertStatus(int index){
-        
-        VKTrack currTrack = tracks.get(index);
-        if (last != null && last.getTrackIndex() != currTrack.getTrackIndex()){
-            last.stop();
-            VKTrackPlacer1.getInstance().invertTimeProgress(last.getTrackIndex());
+    public void playOrStop(int trackIndex){
+        VKTrack currTrack = tracks.get(trackIndex);
+        if (player != null) {
+            player.stop();
+            if (lastTrack.getTrackIndex() != currTrack.getTrackIndex()) {
+                lastTrack.setPlaying(false);
+                lastTrack.getPlacer().repaintTrack();
+            }
         }
-        currTrack.invertStatus();
-        last = currTrack;
-    }
-    
-    public VKTrack getTrack(int index){
-        return tracks.get(index);
-    }
-    
-    public void addTrack(VKTrack track){
-        if (track != null) {
-            tracks.add(track);
+
+        if (currTrack.isPlaying()) {
+            player.stop();
+            currTrack.setPlaying(false);
+
         } else {
-            throw new IllegalArgumentException();
+            currTrack.setPlaying(true);
+            player = new MediaPlayer(currTrack.getMp3());
+            player.play();
         }
-    }
-
-    public void addAllMusic(ArrayList<VKTrack> tracks){
-        this.tracks.addAll(tracks);
+        lastTrack = currTrack;
     }
 
     public MediaPlayer getPlayer(){
         return player;
     }
 
-    public Iterator<VKTrack> getIterator(){
-        return tracks.iterator();
+    public VKTrack getNext(int index){
+        return tracks.get(index+1);
     }
     
+    void playNext(int trackIndex){
+        playOrStop(trackIndex+1);
+    }
 }

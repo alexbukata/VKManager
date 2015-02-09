@@ -14,14 +14,16 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import vkmanager.model.User;
+import javafx.stage.Stage;
+import vkmanager.model.music.VKTrackPlacer;
 
 /**
  * FXML Controller class
@@ -29,21 +31,18 @@ import vkmanager.model.User;
  * @author i-mad_000
  */
 public class RootVKController implements Initializable{
-    private BorderPane rootPane;
+
     @FXML
     private MenuItem photoItem;
     @FXML
-    private BorderPane mainPane;    
-    @FXML 
-    private Label userFirstname;    
-    @FXML 
-    private Label userLastname;
+    private BorderPane mainPane;
     @FXML
-    private Button userPhoto;
+    private Label currTrackName;
+    @FXML
+    private ProgressBar currTrackProgress;
+    @FXML
+    private Button currTrackBut;
 
-    public void initRootPane(BorderPane mainPane){
-    }
-   
     public void onPhotosSelect(ActionEvent event){
         try {
             Parent photosPane = FXMLLoader.load(getClass().getResource("/vkmanager/view/photos/Photos.fxml"));
@@ -52,7 +51,7 @@ public class RootVKController implements Initializable{
             Logger.getLogger(RootVKController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void onMusicSelect(ActionEvent event){
         try {
             Parent musicPane = FXMLLoader.load(getClass().getResource("/vkmanager/view/music/AudioPlayer.fxml"));
@@ -62,21 +61,14 @@ public class RootVKController implements Initializable{
             Logger.getLogger(RootVKController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        User user = User.getCurrentUser();
-        Image userPhotoLink = new Image(user.getPhoto());
-        System.out.println(userPhotoLink);
-        ImageView userPhotoImg = new ImageView(userPhotoLink);
-        userPhoto.setGraphic(userPhotoImg);
+    public void initialize(URL url, ResourceBundle rb){
+        VKTrackPlacer.setGlobalComponents(currTrackBut, currTrackName, currTrackProgress);
         
-        userFirstname.setText(user.getName());
-        userLastname.setText(user.getLastname());
-    }    
+    }
 
-    
 }

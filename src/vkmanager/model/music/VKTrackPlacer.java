@@ -1,90 +1,117 @@
 package vkmanager.model.music;
 
-import java.util.Iterator;
-import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 
 public class VKTrackPlacer{
-/*
-    private VKTrack track;
-    private VKTrackPlayer player;
-    private Button playPause;
-    private ProgressBar time;
-    private boolean isTimeVisible;
-    private Slider volume;
-    private Label name;
-    private GridPane container;
-    private AnimationTimer progressTimer;
 
-    public VKTrackPlacer(VKTrack track, GridPane pane){
+    private final VKTrack track;
+    private Button trackBut;
+    private Label name;
+    private ProgressBar progress;
+    private VKTrackPlayer player;
+    private final ImageView play;
+    private final ImageView pause;
+    private static GridPane musicList;
+
+    private static Button globalPlay;
+    private static Label globalName;
+    private static ProgressBar globalProgress;
+
+    public VKTrackPlacer(VKTrack track){
         this.track = track;
-        this.container = pane;
-        name = new Label(track.getName());
-        playPause = new Button();
         player = VKTrackPlayer.getInstance();
-        progressTimer = new TrackTimer(track, this, player);
-        isTimeVisible = false;
-        System.out.println(player.getTracks());
+        play = new ImageView(new Image("/res/img/play.gif"));
+        pause = new ImageView(new Image("/res/img/pause.gif"));
+    }
+
+    public static void setMusicList(GridPane musicList){
+        VKTrackPlacer.musicList = musicList;
     }
 
     public void place(){
-        playPause.setGraphic(track.getPlay());
-        playPause.setOnAction(new EventHandler<ActionEvent>(){
+        trackBut = new Button();
+        trackBut.setStyle("-fx-background-color: transparent");
+        trackBut.setGraphic(play);
+
+        progress = new ProgressBar();
+        progress.setPrefSize(333, 11);
+        progress.setMinHeight(11);
+        TrackTimer progressTimer = new TrackTimer(track.getPlacer());
+
+        trackBut.setOnAction(new EventHandler<ActionEvent>(){
+
             @Override
             public void handle(ActionEvent event){
-                player.invertStatus(track.getTrackIndex());
-                invertTimeProgress();
+                progressTimer.setTrack(track);
+                player.playOrStop(track.getTrackIndex());
+                repaintTrack();
                 progressTimer.start();
             }
         });
-        playPause.setStyle("-fx-background-color: white");
-        track.setTrackBut(playPause);
-        name.setOnMouseReleased(new EventHandler<MouseEvent>(){
+
+        name = new Label(track.getName());
+        /*name.setOnMouseClicked(new EventHandler<MouseEvent>(){
 
             @Override
             public void handle(MouseEvent event){
-                player.invertStatus(track.getTrackIndex());
-                invertTimeProgress();
+                progressTimer.setTrack(track);
+                player.playOrStop(track.getTrackIndex());
+                repaintTrack();
                 progressTimer.start();
             }
-        });
-        time = new ProgressBar();
+        */
 
-        time.setPrefSize(333, 11);
-        time.setMinHeight(11);
+        //globalPlay.setOnAction(trackBut.getOnAction());
 
-        //BorderPane playPane = new BorderPane(null, playPause, null, null, null);
-        //playPane.setPrefSize(26, 30);
-        ToolBar trackBar = new ToolBar(playPause, name);
-        trackBar.setStyle("-fx-background-color: white");
-        container.add(trackBar, 0, track.getTrackIndex() + 1);
+        ToolBar trackBar = new ToolBar(trackBut, name);
+        trackBar.setStyle("-fx-background-color: transparent");
+
+        musicList.addRow(track.getTrackIndex(), trackBar);
     }
 
-    public void updateProgress(double value){
-        time.setProgress(value);
-    }
+    public void repaintTrack(){
+        globalName.setText(name.getText());
+        globalPlay.setGraphic(track.isPlaying() ? new ImageView(new Image("/res/img/pause.gif")) : new ImageView(new Image("/res/img/play.gif")));
+        globalProgress.progressProperty().bind(progress.progressProperty());
 
-    public void invertTimeProgress(){
-        BorderPane pane = new BorderPane(null, null, null, time, name);
-        ToolBar trackBar = null;
-        if (!track.isPlaying()) {
-            trackBar = new ToolBar(playPause, name);
+        BorderPane pane = new BorderPane(null, null, null, progress, name);
+        ToolBar trackBar;
+        if (track.isPlaying()) {
+            trackBar = new ToolBar(trackBut, pane);
+            trackBut.setGraphic(pause);
         } else {
-            trackBar = new ToolBar(playPause, pane);
+            trackBar = new ToolBar(trackBut, name);
+            trackBut.setGraphic(play);
         }
-        trackBar.setStyle("-fx-background-color: white");
-        container.add(trackBar, 0, track.getTrackIndex() + 1);
-        System.out.println(track.getTrackIndex() + 2);
+        trackBar.setStyle("-fx-background-color: transparent");
+        musicList.add(trackBar, 0, track.getTrackIndex());
     }
 
-    public AnimationTimer getProgressTimer(){
-        return progressTimer;
+    public VKTrack getTrack(){
+        return track;
     }
-    
-     */
+
+    public ProgressBar getProgress(){
+        return progress;
+    }
+
+    public VKTrackPlacer getNextPlacer(){
+        return player.getNext(track.getTrackIndex()).getPlacer();
+    }
+
+    public static void setGlobalComponents(Button globalPlay, Label globalName, ProgressBar globalProgress){
+        VKTrackPlacer.globalName = globalName;
+        VKTrackPlacer.globalPlay = globalPlay;
+        VKTrackPlacer.globalProgress = globalProgress;
+    }
+
 }

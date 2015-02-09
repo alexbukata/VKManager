@@ -1,39 +1,41 @@
 package vkmanager.model.music;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.control.ProgressBar;
 
 public class TrackTimer extends AnimationTimer{
-    
-    private VKTrack track;
-    private VKTrackPlacer1 trackPlacer;
-    private VKTrackPlayer trackPlayer;
-    
-    public TrackTimer(){
+ 
+    private ProgressBar progress;
+    private VKTrackPlacer placer;
+    private VKTrackPlayer player;
+
+    public TrackTimer(VKTrackPlacer placer){
+        this.placer = placer;
+        progress = placer.getProgress();
+        player = VKTrackPlayer.getInstance();
     }
-    
-    public VKTrack getTrack(){
-        return track;
+
+    public void setTrack(VKTrack track){
+        placer = track.getPlacer();
+        progress = placer.getProgress();
     }
-    
-    public void initialize(VKTrack track){
-        trackPlacer = VKTrackPlacer1.getInstance();
-        trackPlayer = VKTrackPlayer.getInstance();
-        
-        this.track = track;
-    }
-    
+
     @Override
     public void handle(long now){
-        double length = track.getPlayer().getTotalDuration().toSeconds();
-        double currTime = track.getPlayer().getCurrentTime().toSeconds();
-        double progress = currTime / length;
-        if (1 - progress < 0.001) {
-            progress = 0;
-            trackPlayer.invertStatus(track.getTrackIndex() + 1);
-            trackPlacer.invertTimeProgress(track.getTrackIndex() + 1);
-            initialize(trackPlayer.getTrack(track.getTrackIndex() + 1));
+        double duration = player.getPlayer().getTotalDuration().toSeconds();
+        double currTime = player.getPlayer().getCurrentTime().toSeconds();
+
+        double progress = currTime / duration;
+        if (1 - progress < 0.01) {
+            player.playOrStop(placer.getTrack().getTrackIndex());
+            placer.repaintTrack();
+            player.playOrStop(placer.getTrack().getTrackIndex() + 1);
+            placer.getNextPlacer().repaintTrack();
+            placer = placer.getNextPlacer();
+            this.progress = placer.getProgress();
+
         }
-        trackPlacer.updateProgress(track.getTrackIndex(), progress);
+        this.progress.setProgress(progress);
     }
-    
+
 }

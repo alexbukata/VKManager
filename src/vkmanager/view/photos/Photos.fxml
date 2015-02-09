@@ -14,7 +14,7 @@
           <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" minWidth="0.0" prefHeight="46.0" prefWidth="160.0">
                <children>
                   <Button layoutX="659.0" layoutY="12.0" mnemonicParsing="false" onAction="#loadAlbums" text="Загрузить альбомы" />
-                  <TextField fx:id="userIdAlb" alignment="CENTER" layoutX="469.0" layoutY="12.0" prefHeight="25.0" prefWidth="175.0" promptText="ссылка на пользователя" />
+                  <TextField fx:id="userIdAlb" layoutX="495.0" layoutY="12.0" promptText="id пользователя" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">

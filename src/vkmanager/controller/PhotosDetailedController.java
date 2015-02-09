@@ -11,16 +11,31 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 import vkmanager.model.User;
 import vkmanager.model.VKApi;
@@ -43,7 +58,7 @@ public class PhotosDetailedController implements Initializable{
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
-        vkapi = VKApi.getVKApi();
+        vkapi = new VKApi(User.getCurrentUser());
     }
     
     public void showPhotosFromAlbum(VKPhotoAlbum album, int userId){
