@@ -32,7 +32,7 @@
                <children>
                   <Group layoutX="-9.0" layoutY="-413.0" AnchorPane.rightAnchor="21.57421875">
                      <children>
-                        <Label layoutX="477.0" layoutY="430.0" text="Букатаhvjufkuyfkufkyg" />
+                        <Label fx:id="userLastname" layoutX="477.0" layoutY="430.0" text="Букатаhvjufkuyfkufkyg" />
                         <MenuButton contentDisplay="RIGHT" graphicTextGap="0.0" layoutX="468.0" layoutY="443.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" popupSide="RIGHT" prefHeight="30.0" prefWidth="32.0" style="-fx-background-color: transparent;" textFill="#6600ff">
                            <cursor>
                               <Cursor fx:constant="HAND" />
@@ -45,8 +45,8 @@
                               <MenuItem fx:id="musicItem" mnemonicParsing="false" onAction="#onMusicSelect" text="Моя музыка" />
                            </items>
                         </MenuButton>
-                        <Button layoutX="421.0" layoutY="416.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent; -fx-background-image: url(&quot;http://cs402330.vk.me/v402330401/9760/pV6sZ5wRGxE.jpg&quot;);" />
-                        <Label layoutX="477.0" layoutY="413.0" text="Александр" />
+                        <Button fx:id="userPhoto" layoutX="414.0" layoutY="413.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" style="-fx-background-color: transparent;" />
+                        <Label fx:id="userFirstname" layoutX="477.0" layoutY="413.0" text="Александр" />
                      </children>
                   </Group>
                   <ToolBar prefHeight="40.0" prefWidth="412.0" style="-fx-background-color: transparent;">

@@ -5,26 +5,18 @@
  */
 package vkmanager.controller;
 
-import java.awt.event.MouseEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ResourceBundle;
-import javafx.animation.AnimationTimer;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.*;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
 import vkmanager.model.User;
 import vkmanager.model.VKApi;
 import vkmanager.model.music.VKTrack;
-import vkmanager.model.music.VKTrackPlacer;
 import vkmanager.model.music.VKTrackPlacer1;
 import vkmanager.model.music.VKTrackPlayer;
 
@@ -78,8 +70,7 @@ public class AudioPlayerController implements Initializable{
         placer = VKTrackPlacer1.getInstance();
         placer.setContainer(musicList);
         User user = User.getCurrentUser();
-        vkapi = new VKApi(user);
-
+        vkapi = VKApi.getVKApi();
     }
 
 }
