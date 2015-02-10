@@ -17,8 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -36,8 +34,6 @@ import vkmanager.model.User;
 import vkmanager.model.VKApi;
 import vkmanager.model.photos.VKPhotoAlbum;
 
-//http://vk.com/id49364104
-
 public class PhotosController implements Initializable{
     @FXML
     private GridPane gridPane;
@@ -52,6 +48,8 @@ public class PhotosController implements Initializable{
     
     @Override
     public void initialize(URL url, ResourceBundle rb){
+        user = User.getCurrentUser();
+        vkapi = VKApi.getVKApi();
         try{
             loadAlbums();
         }catch(IOException ex){
@@ -61,15 +59,21 @@ public class PhotosController implements Initializable{
     
     @FXML
     private void loadAlbums() throws IOException{
-         user = User.getCurrentUser();
-         vkapi = new VKApi(user);
          idForDownload = user.getId();
          if(userIdAlb.getText() != null && !userIdAlb.getText().isEmpty()){
              idForDownload = vkapi.getIdFromHref(userIdAlb.getText());
          }
-         //System.out.println(idForDownload);
-         ArrayList<VKPhotoAlbum> albums = vkapi.getAllUserAlbums(idForDownload);
-         showAlbums(albums);
+         
+         if(vkapi.getNumberOfAlbums(idForDownload) != 0){
+            vkapi.getNumberOfAlbums(idForDownload);
+            ArrayList<VKPhotoAlbum> albums = vkapi.getAllUserAlbums(idForDownload);
+            showAlbums(albums);
+         }else{
+             gridPane.getChildren().clear();
+             Text t = new Text("Доступных альбомов нет"); 
+             t.setFont(new Font(20));
+             gridPane.add(t, 0, 0);
+         }
     }
     
     private void showAlbums(ArrayList<VKPhotoAlbum> albums){

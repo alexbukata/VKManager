@@ -2,7 +2,6 @@ package vkmanager.model;
 
 import vkmanager.model.music.VKTrack;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
@@ -12,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.FileUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,19 +19,26 @@ import vkmanager.model.photos.VKPhoto;
 import vkmanager.model.photos.VKPhotoAlbum;
 
 public class VKApi{
-    private static String client_id = "4763444";   //id приложения
     private static int user_id;   //id пользователя
-    private static String redirect_uri = "http://api.vkontakte.ru/blank.html";
     private static String token;
+    private static VKApi vkApi = null;
     private static int musicOffset = 0;
-    //String settings = "friends";    //запрашиваемые функции
     
-    public VKApi(User user){
+    private VKApi(){}
+    
+    private VKApi(User user){
         this.user_id = user.getId();
         this.token = user.getToken();
     }
     
-
+    public static VKApi createVKApi(User user){
+        if(vkApi == null) vkApi = new VKApi(user);
+        return vkApi;
+    }
+    
+    public static VKApi getVKApi(){
+        return vkApi;
+    }
     
     public String createURL(String method, String parameters){
         String url = "https://api.vk.com/method/" + 
@@ -52,7 +57,7 @@ public class VKApi{
         /*Receive albums list in JSON*/
         try{
             URL query = new URL(url);
-            reader = new BufferedReader(new InputStreamReader(query.openStream()));
+            reader = new BufferedReader(new InputStreamReader(query.openStream(), "utf-8"));
             userIdJSON = reader.readLine();
             System.out.println(userIdJSON);
         }catch (MalformedURLException e){
@@ -118,15 +123,106 @@ public class VKApi{
         return id;
     }
     
+    public static User getUserInfo(String newToken){
+        int userId = 0;
+        String name = "";
+        String lastname = "";
+        String photo = "";
+        
+        String url = "https://api.vk.com/method/" + 
+                "users.get" +
+                "?fields=photo_50" + "&out=0" +
+                "&access_token=" + newToken;
+        
+        BufferedReader reader = null;
+        String userIdJSON = "";
+        //System.out.println(url);
+        /*Receive albums list in JSON*/
+        try{
+            URL query = new URL(url);
+            reader = new BufferedReader(new InputStreamReader(query.openStream(), "utf-8"));
+            userIdJSON = reader.readLine();
+            //System.out.println(userIdJSON);
+        }catch (MalformedURLException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally{
+            try{
+                reader.close();
+            }catch(IOException ex){
+                Logger.getLogger(VKApi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        JSONParser parser = new JSONParser();
+        try{
+            JSONObject jsonResp = (JSONObject) parser.parse(userIdJSON.toString());
+            JSONArray postsList = (JSONArray) jsonResp.get("response");
+            JSONObject userInfo = null;
+            for (int i=0; i < postsList.size(); i++){
+                userInfo = (JSONObject) postsList.get(i);
+                userId = Integer.parseInt(userInfo.get("uid").toString());
+                name = userInfo.get("first_name").toString();
+                lastname = userInfo.get("last_name").toString();
+                photo = userInfo.get("photo_50").toString();
+            }
+        }catch (ParseException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        
+        return User.createUser(userId, name, lastname, photo, newToken);
+    }
+    
+    public int getNumberOfAlbums(int userId){        
+        String url = "https://api.vk.com/method/" + 
+                "photos.getAlbumsCount" +
+                "?user_id=" + userId + "&out=0" +
+                "&access_token=" + token;
+        
+        int numberOfAlbums = 0;
+        BufferedReader reader = null;
+        String albumsNumberJSON = "";
+        System.out.println(url);
+        /*Receive albums list in JSON*/
+        try{
+            URL query = new URL(url);
+            reader = new BufferedReader(new InputStreamReader(query.openStream(), "utf-8"));
+            albumsNumberJSON = reader.readLine();
+            //System.out.println(albumsNumberJSON);
+        }catch (MalformedURLException e){
+            e.printStackTrace();
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally{
+            try{
+                reader.close();
+            }catch(IOException ex){
+                Logger.getLogger(VKApi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        JSONParser parser = new JSONParser();
+        try{
+            JSONObject jsonResp = (JSONObject) parser.parse(albumsNumberJSON.toString());
+            numberOfAlbums = Integer.parseInt(jsonResp.get("response").toString());
+        }catch (ParseException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }        
+        return numberOfAlbums;
+    }
+    
     public ArrayList<VKTrack> getAllUserMusic(){
         BufferedReader reader = null;
         String tracksJSON = "";
-        String url = createURL("audio.get","&count=20&offset="+musicOffset);
+        String url = createURL("audio.get","&count=10&offset="+musicOffset);
         System.out.println(url);
         musicOffset+=10;
         try{
             URL query = new URL(url);
-            reader = new BufferedReader(new InputStreamReader(query.openStream()));
+            reader = new BufferedReader(new InputStreamReader(query.openStream(), "utf-8"));
             tracksJSON = reader.readLine();
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,6 +241,7 @@ public class VKApi{
                 int duration = Integer.parseInt(track.get("duration").toString());
                 URL trackUrl = new URL(track.get("url").toString());
                 VKTrack vktrack = new VKTrack(titleArtist, trackUrl);
+                System.out.println(vktrack.getTrackIndex());
                 tracks.add(vktrack);
             }
         } catch (ParseException ex) {
@@ -163,9 +260,9 @@ public class VKApi{
         /*Receive albums list in JSON*/
         try{
             URL query = new URL(url);
-            reader = new BufferedReader(new InputStreamReader(query.openStream()));
+            reader = new BufferedReader(new InputStreamReader(query.openStream(), "utf-8"));
             albumsJSON = reader.readLine();
-            //System.out.println(albumsJSON);
+            System.out.println(albumsJSON);
         }catch (MalformedURLException e){
             e.printStackTrace();
         }catch (IOException e){
@@ -188,19 +285,14 @@ public class VKApi{
             JSONObject album = null;
             for (int i=0; i < postsList.size(); i++){
                 album = (JSONObject) postsList.get(i);
+                if(Integer.parseInt(album.get("thumb_id").toString()) == 0) continue;
                 thumbs.append(us_id + "_" + album.get("thumb_id").toString());
                 if(!(i+1 == postsList.size()))  thumbs.append(",");
             }
             //System.out.println(thumbs);
             //System.out.println(thumbs);
             HashMap<Integer, String> thumbsLinks = getAlbumsThumbs(thumbs.toString());
-            for(Map.Entry<Integer, String> entrySet : thumbsLinks.entrySet()){
-                Integer key = entrySet.getKey();
-                String value = entrySet.getValue();
-                //System.out.println(key + ": " + value);
-            }
-            
-            for (int i=0; i < postsList.size(); i++){
+            for(int i=0; i < postsList.size(); i++){
                 album = (JSONObject) postsList.get(i);
                 //String thumb = getAlbumThumb(Integer.parseInt(album.get("thumb_id").toString()));
                 albums.add(new VKPhotoAlbum(Integer.parseInt(album.get("aid").toString()), 
@@ -226,9 +318,10 @@ public class VKApi{
         /*Receive albums thumb in JSON*/
         try{
             URL query = new URL(url);
-            reader = new BufferedReader(new InputStreamReader(query.openStream()));
+            reader = new BufferedReader(new InputStreamReader(query.openStream(), "utf-8"));
             thumbJSON = reader.readLine();
-            //System.out.println(thumbJSON);
+            System.out.println(thumbJSON);
+            System.out.println(url);
         }catch (MalformedURLException e){
             e.printStackTrace();
         }catch (IOException e){
@@ -245,6 +338,7 @@ public class VKApi{
             JSONObject thumb_res = null;
             for (int i=0; i < postsList.size(); i++){
                 thumb_res = (JSONObject) postsList.get(i);
+                System.out.println(thumb_res.get("aid").toString() + " " + thumb_res.get("src_big").toString());
                 thumbs.put(Integer.parseInt(thumb_res.get("aid").toString()), thumb_res.get("src_big").toString());
             }
         }catch (ParseException e) {
@@ -262,7 +356,7 @@ public class VKApi{
         /*Receive photos list in JSON*/
         try{
             URL query = new URL(url);
-            reader = new BufferedReader(new InputStreamReader(query.openStream()));
+            reader = new BufferedReader(new InputStreamReader(query.openStream(), "utf-8"));
             photosJSON = reader.readLine();
             //System.out.println(photosJSON);
         }catch (MalformedURLException e){
